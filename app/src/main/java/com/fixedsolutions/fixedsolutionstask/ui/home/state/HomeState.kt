@@ -1,4 +1,4 @@
-package com.fixedsolutions.fixedsolutionstask.ui.home
+package com.fixedsolutions.fixedsolutionstask.ui.home.state
 
 import com.fixedsolutions.fixedsolutionstask.MovieItem
 

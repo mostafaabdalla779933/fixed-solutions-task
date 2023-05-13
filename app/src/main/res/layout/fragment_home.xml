@@ -8,12 +8,48 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Coming Soon"
+        android:padding="5dp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@color/black"
+        tools:listitem="@layout/item_movie"
+        android:id="@+id/rvComingSoon"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Coming Soon"
+        android:padding="5dp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        android:textSize="18sp"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/black"
+        tools:listitem="@layout/item_movie"
+        android:id="@+id/rvComingSoon"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
 
 
 </LinearLayout>

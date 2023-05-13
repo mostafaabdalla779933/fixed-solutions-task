@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fixedsolutions.fixedsolutionstask.common.handleError
 import com.fixedsolutions.fixedsolutionstask.domain.HomeUseCase
+import com.fixedsolutions.fixedsolutionstask.ui.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*

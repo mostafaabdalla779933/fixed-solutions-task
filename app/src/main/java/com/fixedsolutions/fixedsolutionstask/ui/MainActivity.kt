@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private fun initBottomNavigation() {
         val navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_host) as NavHostFragment).navController
         NavigationUI.setupWithNavController(binding.navView, navController)
-        binding.navView.setOnItemReselectedListener { }
+      //  binding.navView.setOnItemReselectedListener { }
     }
 
 }
