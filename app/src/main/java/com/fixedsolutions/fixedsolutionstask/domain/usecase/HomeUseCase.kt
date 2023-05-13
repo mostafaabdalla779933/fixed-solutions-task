@@ -13,16 +13,20 @@ import javax.inject.Inject
 class HomeUseCase @Inject constructor(val repository: IRepository)  {
 
 
-    suspend fun getComingSoon(): Flow<Response<MovieListResponse>> {
-        return repository.getComingSoon()
+    suspend fun getComingSoon(fromCache: Boolean): Flow<Response<MovieListResponse>> {
+        return repository.getComingSoon(fromCache)
     }
 
-    suspend fun getInTheaters(): Flow<Response<MovieListResponse>> {
-        return repository.getInTheaters()
+    suspend fun getInTheaters(fromCache: Boolean): Flow<Response<MovieListResponse>> {
+        return repository.getInTheaters(fromCache)
     }
 
-    suspend fun getTopRatedMovies(): Flow<Response<MovieListResponse>> {
-        return repository.getTopRatedMovies()
+    suspend fun getTopRatedMovies(fromCache: Boolean): Flow<Response<MovieListResponse>> {
+        return repository.getTopRatedMovies(fromCache)
+    }
+
+    suspend fun getBoxOffice(fromCache: Boolean): Flow<Response<MovieListResponse>> {
+        return repository.getBoxOffice(fromCache)
     }
 
 

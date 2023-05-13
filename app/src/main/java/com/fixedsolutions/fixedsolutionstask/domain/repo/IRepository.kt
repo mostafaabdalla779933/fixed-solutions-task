@@ -6,10 +6,12 @@ import retrofit2.Response
 
 interface IRepository {
 
-    suspend fun getComingSoon() : Flow<Response<MovieListResponse>>
+    suspend fun getComingSoon(fromCache:Boolean) : Flow<Response<MovieListResponse>>
 
-    suspend fun getInTheaters() : Flow<Response<MovieListResponse>>
+    suspend fun getInTheaters(fromCache:Boolean) : Flow<Response<MovieListResponse>>
 
-    suspend fun getTopRatedMovies() : Flow<Response<MovieListResponse>>
+    suspend fun getTopRatedMovies(fromCache:Boolean) : Flow<Response<MovieListResponse>>
+
+    suspend fun getBoxOffice(fromCache:Boolean): Flow<Response<MovieListResponse>>
 
 }

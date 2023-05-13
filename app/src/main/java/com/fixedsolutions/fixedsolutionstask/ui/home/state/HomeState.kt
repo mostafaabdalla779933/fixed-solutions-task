@@ -24,4 +24,11 @@ sealed class HomeState {
     ) : HomeState()
 
 
+    class BoxOfficeState(
+        val isLoading: Boolean = true,
+        val movies: List<MovieItem?> = emptyList(),
+        val error: String? = null
+    ) : HomeState()
+
+
 }

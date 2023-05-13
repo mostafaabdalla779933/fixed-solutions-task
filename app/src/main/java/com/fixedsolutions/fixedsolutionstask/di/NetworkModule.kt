@@ -2,7 +2,7 @@ package com.fixedsolutions.fixedsolutionstask.di
 
 import com.fixedsolutions.fixedsolutionstask.BuildConfig
 import com.fixedsolutions.fixedsolutionstask.data.remote.ApiService
-import com.fixedsolutions.fixedsolutionstask.data.BASE_URL
+import com.fixedsolutions.fixedsolutionstask.common.BASE_URL
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

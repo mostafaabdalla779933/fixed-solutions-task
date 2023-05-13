@@ -20,15 +20,16 @@ class HomeVM @Inject constructor(val useCase: HomeUseCase) : ViewModel() {
     val state = MutableStateFlow<HomeState>(HomeState.ComingSoonState())
 
 
-    fun getScreenData(){
+    fun getScreenData() {
         getComingSoon()
         getInTheaters()
         getTopRatedMovies()
+        getBoxOffice()
     }
 
-    private fun getComingSoon() {
+    private fun getComingSoon(fromCache: Boolean = true) {
         viewModelScope.launch {
-            useCase.getComingSoon()
+            useCase.getComingSoon(fromCache)
                 .onStart {
                     state.value = HomeState.ComingSoonState(isLoading = true)
                 }.onEach { response ->
@@ -52,9 +53,9 @@ class HomeVM @Inject constructor(val useCase: HomeUseCase) : ViewModel() {
         }
     }
 
-    private fun getInTheaters() {
+    private fun getInTheaters(fromCache: Boolean = true) {
         viewModelScope.launch {
-            useCase.getInTheaters()
+            useCase.getInTheaters(fromCache)
                 .onStart {
                     state.value = HomeState.InTheatersState(isLoading = true)
                 }.onEach { response ->
@@ -78,9 +79,9 @@ class HomeVM @Inject constructor(val useCase: HomeUseCase) : ViewModel() {
         }
     }
 
-    private fun getTopRatedMovies() {
+    private fun getTopRatedMovies(fromCache: Boolean = true) {
         viewModelScope.launch {
-            useCase.getTopRatedMovies()
+            useCase.getTopRatedMovies(fromCache)
                 .onStart {
                     state.value = HomeState.TopRatedMoviesState(isLoading = true)
                 }.onEach { response ->
@@ -105,9 +106,34 @@ class HomeVM @Inject constructor(val useCase: HomeUseCase) : ViewModel() {
     }
 
 
+    private fun getBoxOffice(fromCache: Boolean = true) {
+        viewModelScope.launch {
+            useCase.getBoxOffice(fromCache)
+                .onStart {
+                    state.value = HomeState.BoxOfficeState(isLoading = true)
+                }.onEach { response ->
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            state.value = HomeState.BoxOfficeState(
+                                isLoading = false,
+                                movies = it.items ?: emptyList()
+                            )
+                        } ?: kotlin.run {
+                            state.value = HomeState.BoxOfficeState(
+                                isLoading = false,
+                                error = "Something Went Wrong"
+                            )
+                        }
+                    }
+                }.catch {
+                    state.value =
+                        HomeState.BoxOfficeState(isLoading = false, error = handleError(it))
+                }.launchIn(viewModelScope).also { jobs.add(it) }
+        }
+    }
 
 
-    fun onClear(){
+    fun onClear() {
         jobs.forEach { job ->
             if (job.isActive)
                 job.cancel()

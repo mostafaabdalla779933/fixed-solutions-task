@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fixedsolutions.fixedsolutionstask.MovieItem
-import com.fixedsolutions.fixedsolutionstask.R
 import com.fixedsolutions.fixedsolutionstask.databinding.FragmentHomeBinding
 import com.fixedsolutions.fixedsolutionstask.ui.home.adapters.MoviesAdapter
+import com.fixedsolutions.fixedsolutionstask.ui.home.adapters.MoviesVerticalAdapter
 import com.fixedsolutions.fixedsolutionstask.ui.home.state.HomeState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,6 +37,12 @@ class HomeFragment : Fragment() {
 
         }
     }
+
+    private val topHighGrossingAdapter : MoviesVerticalAdapter by lazy {
+        MoviesVerticalAdapter {
+
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,9 +64,8 @@ class HomeFragment : Fragment() {
         viewModel.getScreenData()
     }
 
-    private fun handleState(state: HomeState){
-
-        when(state){
+    private fun handleState(state: HomeState) {
+        when (state) {
             is HomeState.ComingSoonState -> {
                 handleComingSoonState(state)
             }
@@ -70,7 +75,10 @@ class HomeFragment : Fragment() {
             is HomeState.TopRatedMoviesState -> {
                 handleTopRatedMoviesState(state)
             }
-            else ->{}
+            is HomeState.BoxOfficeState -> {
+                handleBoxOfficeState(state)
+            }
+            else -> {}
         }
     }
 
@@ -104,11 +112,22 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun handleBoxOfficeState(state: HomeState.BoxOfficeState) {
+        if (state.isLoading) {
+            topHighGrossingAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
+        } else if (state.movies.isEmpty()) {
+
+        } else {
+            topHighGrossingAdapter.setMovieList(state.movies)
+        }
+    }
+
     private fun initView(){
         binding.apply {
             rvComingSoon.adapter = comingSoonAdapter
             rvInTheaters.adapter = inTheatersAdapter
             rvTopRatedMovies.adapter = topRatedMoviesAdapter
+            rvTopHighGrossing.adapter = topHighGrossingAdapter
         }
     }
 
