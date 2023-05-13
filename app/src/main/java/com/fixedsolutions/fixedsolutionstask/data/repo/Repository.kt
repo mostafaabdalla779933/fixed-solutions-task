@@ -17,4 +17,8 @@ class Repository @Inject constructor(private val apiService : ApiService): IRepo
     override suspend fun getInTheaters(): Flow<Response<MovieListResponse>> {
         return flow { emit(apiService.getInTheaters()) }
     }
+
+    override suspend fun getTopRatedMovies(): Flow<Response<MovieListResponse>> {
+        return flow { emit(apiService.getTopRatedMovies()) }
+    }
 }

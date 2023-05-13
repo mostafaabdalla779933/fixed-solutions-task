@@ -14,4 +14,8 @@ interface ApiService {
     @GET("en/API/InTheaters/${API_KEY}")
     suspend fun getInTheaters(): Response<MovieListResponse>
 
+
+    @GET("en/API/Top250Movies/${API_KEY}")
+    suspend fun getTopRatedMovies(): Response<MovieListResponse>
+
 }

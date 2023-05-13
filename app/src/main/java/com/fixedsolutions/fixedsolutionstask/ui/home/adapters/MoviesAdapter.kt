@@ -4,6 +4,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
@@ -24,7 +25,12 @@ class MoviesAdapter(var list: List<MovieItem?> = emptyList(), val onclick: (Movi
         fun onBind(item: MovieItem, position: Int) {
             rowView.apply {
                 item.title?.let { title -> tvMovieName.text = title }
-                item.imDbRating?.let { rating -> tvMovieRating.text = rating }
+                item.imDbRating?.let { rating ->
+                    tvMovieRating.visibility = View.VISIBLE
+                    tvMovieRating.text = rating
+                } ?: kotlin.run {
+                    tvMovieRating.visibility = View.INVISIBLE
+                }
                 Glide.with(itemView.context)
                     .load(item.image)
                     .placeholder(itemView.context.getLoadingDrawable())

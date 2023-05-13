@@ -10,15 +10,19 @@ import javax.inject.Inject
 
 
 @ViewModelScoped
-class HomeUseCase @Inject constructor(val repository: IRepository) : IHomeUseCase {
+class HomeUseCase @Inject constructor(val repository: IRepository)  {
 
 
-    override suspend fun getComingSoon(): Flow<Response<MovieListResponse>> {
+    suspend fun getComingSoon(): Flow<Response<MovieListResponse>> {
         return repository.getComingSoon()
     }
 
-    override suspend fun getInTheaters(): Flow<Response<MovieListResponse>> {
+    suspend fun getInTheaters(): Flow<Response<MovieListResponse>> {
         return repository.getInTheaters()
+    }
+
+    suspend fun getTopRatedMovies(): Flow<Response<MovieListResponse>> {
+        return repository.getTopRatedMovies()
     }
 
 

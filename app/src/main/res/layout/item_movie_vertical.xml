@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_dark">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:id="@+id/ivMovie"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvMovieRating"
+            tools:text="8.8"
+            android:minLines="1"
+            android:maxLines="1"
+            android:drawablePadding="5dp"
+            android:padding="5dp"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/ivMovie"
+            app:drawableStartCompat="@drawable/ic_star" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvMovieName"
+            android:textColor="@color/white"
+            android:padding="5dp"
+            android:textSize="15sp"
+            android:minLines="2"
+            android:maxLines="2"
+            app:layout_constraintTop_toBottomOf="@id/tvMovieRating"
+            tools:text="movie name"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

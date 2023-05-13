@@ -31,6 +31,12 @@ class HomeFragment : Fragment() {
 
         }
     }
+
+    private val topRatedMoviesAdapter : MoviesAdapter by lazy {
+        MoviesAdapter {
+
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,6 +67,9 @@ class HomeFragment : Fragment() {
             is HomeState.InTheatersState -> {
                 handleInTheatersState(state)
             }
+            is HomeState.TopRatedMoviesState -> {
+                handleTopRatedMoviesState(state)
+            }
             else ->{}
         }
     }
@@ -85,10 +94,21 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun handleTopRatedMoviesState(state: HomeState.TopRatedMoviesState) {
+        if (state.isLoading) {
+            topRatedMoviesAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
+        } else if (state.movies.isEmpty()) {
+
+        } else {
+            topRatedMoviesAdapter.setMovieList(state.movies)
+        }
+    }
+
     private fun initView(){
         binding.apply {
             rvComingSoon.adapter = comingSoonAdapter
             rvInTheaters.adapter = inTheatersAdapter
+            rvTopRatedMovies.adapter = topRatedMoviesAdapter
         }
     }
 

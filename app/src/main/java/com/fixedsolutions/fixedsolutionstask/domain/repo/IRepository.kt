@@ -10,4 +10,6 @@ interface IRepository {
 
     suspend fun getInTheaters() : Flow<Response<MovieListResponse>>
 
+    suspend fun getTopRatedMovies() : Flow<Response<MovieListResponse>>
+
 }

@@ -23,6 +23,7 @@ class HomeVM @Inject constructor(val useCase: HomeUseCase) : ViewModel() {
     fun getScreenData(){
         getComingSoon()
         getInTheaters()
+        getTopRatedMovies()
     }
 
     private fun getComingSoon() {
@@ -76,6 +77,34 @@ class HomeVM @Inject constructor(val useCase: HomeUseCase) : ViewModel() {
                 }.launchIn(viewModelScope).also { jobs.add(it) }
         }
     }
+
+    private fun getTopRatedMovies() {
+        viewModelScope.launch {
+            useCase.getTopRatedMovies()
+                .onStart {
+                    state.value = HomeState.TopRatedMoviesState(isLoading = true)
+                }.onEach { response ->
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            state.value = HomeState.TopRatedMoviesState(
+                                isLoading = false,
+                                movies = it.items ?: emptyList()
+                            )
+                        } ?: kotlin.run {
+                            state.value = HomeState.TopRatedMoviesState(
+                                isLoading = false,
+                                error = "Something Went Wrong"
+                            )
+                        }
+                    }
+                }.catch {
+                    state.value =
+                        HomeState.TopRatedMoviesState(isLoading = false, error = handleError(it))
+                }.launchIn(viewModelScope).also { jobs.add(it) }
+        }
+    }
+
+
 
 
     fun onClear(){
