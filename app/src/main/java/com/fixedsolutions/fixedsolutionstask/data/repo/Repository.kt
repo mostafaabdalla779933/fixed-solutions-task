@@ -22,33 +22,81 @@ class Repository @Inject constructor(
                 val cache = movieDAO.getMovieItems(MovieType.ComingSoon.value)
                 if (cache.isEmpty()) {
                     val response = apiService.getComingSoon()
-                    movieDAO.addMovieItems(mapResponse(response,MovieType.ComingSoon.value))
+                    movieDAO.addMovieItems(mapResponse(response, MovieType.ComingSoon.value))
                     emit(response)
                 } else {
                     emit(Response.success(MovieListResponse(items = cache)))
                 }
             } else {
                 val response = apiService.getComingSoon()
-                movieDAO.addMovieItems(mapResponse(response,MovieType.ComingSoon.value))
+                movieDAO.addMovieItems(mapResponse(response, MovieType.ComingSoon.value))
                 emit(response)
             }
         }
     }
 
     override suspend fun getInTheaters(fromCache: Boolean): Flow<Response<MovieListResponse>> {
-        return flow { emit(apiService.getInTheaters()) }
+        return flow {
+            if (fromCache) {
+                val cache = movieDAO.getMovieItems(MovieType.InTheaters.value)
+                if (cache.isEmpty()) {
+                    val response = apiService.getInTheaters()
+                    movieDAO.addMovieItems(mapResponse(response, MovieType.InTheaters.value))
+                    emit(response)
+                } else {
+                    emit(Response.success(MovieListResponse(items = cache)))
+                }
+            } else {
+                val response = apiService.getComingSoon()
+                movieDAO.addMovieItems(mapResponse(response, MovieType.InTheaters.value))
+                emit(response)
+            }
+        }
     }
 
     override suspend fun getTopRatedMovies(fromCache: Boolean): Flow<Response<MovieListResponse>> {
-        return flow { emit(apiService.getTopRatedMovies()) }
+        return flow {
+            if (fromCache) {
+                val cache = movieDAO.getMovieItems(MovieType.TopRated.value)
+                if (cache.isEmpty()) {
+                    val response = apiService.getTopRatedMovies()
+                    movieDAO.addMovieItems(mapResponse(response, MovieType.TopRated.value))
+                    emit(response)
+                } else {
+                    emit(Response.success(MovieListResponse(items = cache)))
+                }
+            } else {
+                val response = apiService.getTopRatedMovies()
+                movieDAO.addMovieItems(mapResponse(response, MovieType.TopRated.value))
+                emit(response)
+            }
+        }
     }
 
     override suspend fun getBoxOffice(fromCache: Boolean): Flow<Response<MovieListResponse>> {
-        return flow { emit(apiService.getBoxOffice()) }
+        return flow {
+            if (fromCache) {
+                val cache = movieDAO.getMovieItems(MovieType.HighGrossing.value)
+                if (cache.isEmpty()) {
+                    val response = apiService.getBoxOffice()
+                    movieDAO.addMovieItems(mapResponse(response, MovieType.HighGrossing.value))
+                    emit(response)
+                } else {
+                    emit(Response.success(MovieListResponse(items = cache)))
+                }
+            } else {
+                val response = apiService.getBoxOffice()
+                movieDAO.addMovieItems(mapResponse(response, MovieType.HighGrossing.value))
+                emit(response)
+            }
+        }
     }
 
 
-    fun mapResponse(response: Response<MovieListResponse>,movieType:String):List<MovieItem?>{
+    private fun mapResponse(
+        response: Response<MovieListResponse>,
+        movieType: String
+    ): List<MovieItem?> {
         return response.body()?.items?.map {
             it?.also {
                 it.movieType = movieType
