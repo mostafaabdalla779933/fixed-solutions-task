@@ -15,8 +15,8 @@ import com.fixedsolutions.fixedsolutionstask.databinding.ItemMovieBinding
 
 
 
-class ComingSoonAdapter(var list: List<MovieItem?> = emptyList(), val onclick: (MovieItem) -> Unit) :
-    RecyclerView.Adapter<ComingSoonAdapter.ComingSoonViewHolder>() {
+class MoviesAdapter(var list: List<MovieItem?> = emptyList(), val onclick: (MovieItem) -> Unit) :
+    RecyclerView.Adapter<MoviesAdapter.ComingSoonViewHolder>() {
 
     inner class ComingSoonViewHolder(private val rowView: ItemMovieBinding) :
         RecyclerView.ViewHolder(rowView.root) {

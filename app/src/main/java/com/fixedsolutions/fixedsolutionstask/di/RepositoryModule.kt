@@ -2,7 +2,7 @@ package com.fixedsolutions.fixedsolutionstask.di
 
 import com.fixedsolutions.fixedsolutionstask.data.remote.ApiService
 import com.fixedsolutions.fixedsolutionstask.data.repo.Repository
-import com.fixedsolutions.fixedsolutionstask.domain.IRepository
+import com.fixedsolutions.fixedsolutionstask.domain.repo.IRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

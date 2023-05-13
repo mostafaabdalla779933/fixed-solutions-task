@@ -9,4 +9,11 @@ sealed class HomeState {
         val movies: List<MovieItem?> = emptyList(),
         val error: String? = null
     ) : HomeState()
+
+
+    class InTheatersState(
+        val isLoading: Boolean = true,
+        val movies: List<MovieItem?> = emptyList(),
+        val error: String? = null
+    ) : HomeState()
 }

@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 @Parcelize
-data class ComingSoonResponse(
+data class MovieListResponse(
 
 	@field:SerializedName("errorMessage")
 	val errorMessage: String? = null,

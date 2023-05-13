@@ -1,4 +1,4 @@
-package com.fixedsolutions.fixedsolutionstask.ui.home
+package com.fixedsolutions.fixedsolutionstask.ui.home.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.fixedsolutions.fixedsolutionstask.R
 import com.fixedsolutions.fixedsolutionstask.databinding.FragmentHomeBinding
-import com.fixedsolutions.fixedsolutionstask.ui.home.adapters.ComingSoonAdapter
+import com.fixedsolutions.fixedsolutionstask.ui.home.adapters.MoviesAdapter
 import com.fixedsolutions.fixedsolutionstask.ui.home.state.HomeState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -18,9 +18,15 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     lateinit var binding:FragmentHomeBinding
-    lateinit var viewModel:HomeVM
-    private val comingSoonAdapter : ComingSoonAdapter by lazy {
-        ComingSoonAdapter {
+    lateinit var viewModel: HomeVM
+    private val comingSoonAdapter : MoviesAdapter by lazy {
+        MoviesAdapter {
+
+        }
+    }
+
+    private val inTheatersAdapter : MoviesAdapter by lazy {
+        MoviesAdapter {
 
         }
     }
@@ -51,6 +57,9 @@ class HomeFragment : Fragment() {
             is HomeState.ComingSoonState -> {
                 handleComingSoonState(state)
             }
+            is HomeState.InTheatersState -> {
+                handleInTheatersState(state)
+            }
             else ->{}
         }
     }
@@ -65,9 +74,20 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun handleInTheatersState(state: HomeState.InTheatersState) {
+        if (state.isLoading) {
+
+        } else if (state.movies.isEmpty()) {
+
+        } else {
+            inTheatersAdapter.setMovieList(state.movies)
+        }
+    }
+
     private fun initView(){
         binding.apply {
             rvComingSoon.adapter = comingSoonAdapter
+            rvInTheaters.adapter = inTheatersAdapter
         }
     }
 

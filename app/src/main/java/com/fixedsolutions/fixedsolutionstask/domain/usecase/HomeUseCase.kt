@@ -1,20 +1,26 @@
-package com.fixedsolutions.fixedsolutionstask.data.repo
+package com.fixedsolutions.fixedsolutionstask.domain.usecase
+
 
 import com.fixedsolutions.fixedsolutionstask.MovieListResponse
-import com.fixedsolutions.fixedsolutionstask.data.remote.ApiService
 import com.fixedsolutions.fixedsolutionstask.domain.repo.IRepository
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import javax.inject.Inject
 
-class Repository @Inject constructor(private val apiService : ApiService): IRepository {
+
+@ViewModelScoped
+class HomeUseCase @Inject constructor(val repository: IRepository) : IHomeUseCase {
+
 
     override suspend fun getComingSoon(): Flow<Response<MovieListResponse>> {
-        return flow { emit(apiService.getComingSoon()) }
+        return repository.getComingSoon()
     }
 
     override suspend fun getInTheaters(): Flow<Response<MovieListResponse>> {
-        return flow { emit(apiService.getInTheaters()) }
+        return repository.getInTheaters()
     }
+
+
+
 }

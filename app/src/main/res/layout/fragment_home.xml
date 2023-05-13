@@ -6,7 +6,7 @@
     android:background="@color/grey_dark"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.home.view.HomeFragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         android:orientation="horizontal"
         android:background="@color/black"
         tools:listitem="@layout/item_movie"
-        android:id="@+id/rvComingSoon"
+        android:id="@+id/rvInTheaters"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
@@ -33,7 +33,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Coming Soon"
+        android:text="In Theaters"
         android:padding="5dp"
         android:textColor="@color/yellow"
         android:textStyle="bold"
