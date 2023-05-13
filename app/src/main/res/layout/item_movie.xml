@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="100dp"
+    android:layout_width="150dp"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     app:cardCornerRadius="8dp">
@@ -26,6 +26,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/tvMovieRating"
             tools:text="8.8"
+            android:minLines="1"
+            android:maxLines="1"
             android:drawablePadding="5dp"
             android:padding="5dp"
             android:textSize="14sp"
@@ -40,6 +42,8 @@
             android:textColor="@color/white"
             android:padding="5dp"
             android:textSize="15sp"
+            android:minLines="2"
+            android:maxLines="2"
             app:layout_constraintTop_toBottomOf="@id/tvMovieRating"
             tools:text="movie name"/>
 

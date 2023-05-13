@@ -89,6 +89,7 @@ data class MovieItem(
 	val id: String? = null,
 
 	@field:SerializedName("releaseState")
-	val releaseState: String? = null
+	val releaseState: String? = null,
+	var isShimmer:Boolean = false
 ) : Parcelable
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.fixedsolutions.fixedsolutionstask.MovieItem
 import com.fixedsolutions.fixedsolutionstask.R
 import com.fixedsolutions.fixedsolutionstask.databinding.FragmentHomeBinding
 import com.fixedsolutions.fixedsolutionstask.ui.home.adapters.MoviesAdapter
@@ -17,8 +18,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    lateinit var binding:FragmentHomeBinding
-    lateinit var viewModel: HomeVM
+    private lateinit var binding:FragmentHomeBinding
+    private lateinit var viewModel: HomeVM
     private val comingSoonAdapter : MoviesAdapter by lazy {
         MoviesAdapter {
 
@@ -33,11 +34,11 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[HomeVM::class.java]
 
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,7 +67,7 @@ class HomeFragment : Fragment() {
 
     private fun handleComingSoonState(state: HomeState.ComingSoonState) {
         if (state.isLoading) {
-
+            comingSoonAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
         } else if (state.movies.isEmpty()) {
 
         } else {
@@ -76,7 +77,7 @@ class HomeFragment : Fragment() {
 
     private fun handleInTheatersState(state: HomeState.InTheatersState) {
         if (state.isLoading) {
-
+            inTheatersAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
         } else if (state.movies.isEmpty()) {
 
         } else {

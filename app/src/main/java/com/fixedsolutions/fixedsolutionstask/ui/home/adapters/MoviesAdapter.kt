@@ -6,19 +6,20 @@ import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fixedsolutions.fixedsolutionstask.MovieItem
 import com.fixedsolutions.fixedsolutionstask.R
 import com.fixedsolutions.fixedsolutionstask.common.getLoadingDrawable
 import com.fixedsolutions.fixedsolutionstask.databinding.ItemMovieBinding
-
+import com.fixedsolutions.fixedsolutionstask.databinding.ItemMovieShimmerBinding
 
 
 class MoviesAdapter(var list: List<MovieItem?> = emptyList(), val onclick: (MovieItem) -> Unit) :
-    RecyclerView.Adapter<MoviesAdapter.ComingSoonViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class ComingSoonViewHolder(private val rowView: ItemMovieBinding) :
+    inner class MoviesViewHolder(private val rowView: ItemMovieBinding) :
         RecyclerView.ViewHolder(rowView.root) {
         fun onBind(item: MovieItem, position: Int) {
             rowView.apply {
@@ -27,7 +28,12 @@ class MoviesAdapter(var list: List<MovieItem?> = emptyList(), val onclick: (Movi
                 Glide.with(itemView.context)
                     .load(item.image)
                     .placeholder(itemView.context.getLoadingDrawable())
-                    .error(itemView.context.getDrawable(R.drawable.ic_error_loading))
+                    .error(
+                        AppCompatResources.getDrawable(
+                            itemView.context,
+                            R.drawable.ic_error_loading
+                        )
+                    )
                     .into(ivMovie)
                 root.setOnClickListener {
                     onclick(item)
@@ -36,27 +42,57 @@ class MoviesAdapter(var list: List<MovieItem?> = emptyList(), val onclick: (Movi
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComingSoonViewHolder {
-        return ComingSoonViewHolder(
-            ItemMovieBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+    inner class ShimmerViewHolder(private val rowView: ItemMovieShimmerBinding) :
+        RecyclerView.ViewHolder(rowView.root) {
     }
 
-    override fun onBindViewHolder(holder: ComingSoonViewHolder, position: Int) {
-        list[position]?.let { holder.onBind(it, position) }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            VIEW_TYPE -> {
+                MoviesViewHolder(
+                    ItemMovieBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            else -> {
+                ShimmerViewHolder(
+                    ItemMovieShimmerBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+        }
+
     }
 
-    fun setMovieList(list: List<MovieItem?>){
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is MoviesViewHolder -> {
+                list[position]?.let { holder.onBind(it, position) }
+            }
+            is ShimmerViewHolder -> {
+
+            }
+        }
+    }
+
+    fun setMovieList(list: List<MovieItem?>) {
         this.list = list
         notifyDataSetChanged()
     }
 
-
-
+    override fun getItemViewType(position: Int): Int {
+        return if (list.getOrNull(position)?.isShimmer == true) {
+            SHIMMER_TYPE
+        } else {
+            VIEW_TYPE
+        }
+    }
 
     private fun setHighLightedText(tv: TextView, textToHighlight: String) {
 
@@ -71,7 +107,12 @@ class MoviesAdapter(var list: List<MovieItem?> = emptyList(), val onclick: (Movi
         tv.setText(wordToSpan, TextView.BufferType.EDITABLE)
     }
 
-    override fun getItemCount(): Int  = list.size
+    override fun getItemCount(): Int = list.size
+
+    companion object {
+        const val SHIMMER_TYPE = 1
+        const val VIEW_TYPE = 2
+    }
 
 }
 
