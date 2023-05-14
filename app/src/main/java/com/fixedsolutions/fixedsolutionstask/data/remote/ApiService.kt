@@ -2,8 +2,10 @@ package com.fixedsolutions.fixedsolutionstask.data.remote
 
 import com.fixedsolutions.fixedsolutionstask.MovieListResponse
 import com.fixedsolutions.fixedsolutionstask.common.API_KEY
+import com.fixedsolutions.fixedsolutionstask.data.model.SearchResultResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Url
 
 interface ApiService {
 
@@ -22,4 +24,7 @@ interface ApiService {
     @GET("en/API/BoxOffice/$API_KEY")
     suspend fun getBoxOffice(): Response<MovieListResponse>
 
+
+    @GET
+    suspend fun searchExpression(@Url api: String): Response<SearchResultResponse>
 }
