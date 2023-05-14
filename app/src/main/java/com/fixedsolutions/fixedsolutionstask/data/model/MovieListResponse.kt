@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.IgnoredOnParcel
 
 @Parcelize
 data class MovieListResponse(
@@ -39,9 +40,6 @@ data class StarListItem(
 @Entity(tableName = "movie")
 @Parcelize
 data class MovieItem(
-    @PrimaryKey(autoGenerate = true)
-    var roomId: Int = 0,
-
     @field:SerializedName("image")
     val image: String? = null,
 
@@ -92,7 +90,12 @@ data class MovieItem(
 
     var isShimmer: Boolean = false,
     var movieType: String? = null
-) : Parcelable
+) : Parcelable{
+    @PrimaryKey
+    var roomId: String = ""
+        get() = id ?: ""
+
+}
 
 
 enum class MovieType(val value: String) {

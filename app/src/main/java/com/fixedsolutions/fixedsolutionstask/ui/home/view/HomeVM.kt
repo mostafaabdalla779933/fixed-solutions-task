@@ -27,6 +27,13 @@ class HomeVM @Inject constructor(val useCase: HomeUseCase) : ViewModel() {
         getBoxOffice()
     }
 
+    fun refreshScreenData() {
+        getComingSoon(false)
+        getInTheaters(false)
+        getTopRatedMovies(false)
+        getBoxOffice(false)
+    }
+
     private fun getComingSoon(fromCache: Boolean = true) {
         viewModelScope.launch {
             useCase.getComingSoon(fromCache)

@@ -21,27 +21,19 @@ class HomeFragment : Fragment() {
     private lateinit var binding:FragmentHomeBinding
     private lateinit var viewModel: HomeVM
     private val comingSoonAdapter : MoviesAdapter by lazy {
-        MoviesAdapter {
-
-        }
+        MoviesAdapter {}
     }
 
     private val inTheatersAdapter : MoviesAdapter by lazy {
-        MoviesAdapter {
-
-        }
+        MoviesAdapter {}
     }
 
     private val topRatedMoviesAdapter : MoviesAdapter by lazy {
-        MoviesAdapter {
-
-        }
+        MoviesAdapter {}
     }
 
-    private val topHighGrossingAdapter : MoviesVerticalAdapter by lazy {
-        MoviesVerticalAdapter {
-
-        }
+    private val highGrossingAdapter : MoviesVerticalAdapter by lazy {
+        MoviesVerticalAdapter {}
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +41,6 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[HomeVM::class.java]
-
         return binding.root
     }
 
@@ -78,47 +69,62 @@ class HomeFragment : Fragment() {
             is HomeState.BoxOfficeState -> {
                 handleBoxOfficeState(state)
             }
-            else -> {}
         }
     }
 
     private fun handleComingSoonState(state: HomeState.ComingSoonState) {
-        if (state.isLoading) {
-            comingSoonAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
-        } else if (state.movies.isEmpty()) {
-
-        } else {
-            comingSoonAdapter.setMovieList(state.movies)
+        binding.apply {
+            if (state.isLoading) {
+                comingSoonAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
+            } else if (state.movies.isEmpty()) {
+                showError(state.error)
+            } else {
+                comingSoonAdapter.setMovieList(state.movies)
+            }
         }
     }
 
     private fun handleInTheatersState(state: HomeState.InTheatersState) {
-        if (state.isLoading) {
-            inTheatersAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
-        } else if (state.movies.isEmpty()) {
-
-        } else {
-            inTheatersAdapter.setMovieList(state.movies)
+        binding.apply {
+            if (state.isLoading) {
+                inTheatersAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
+            } else if (state.movies.isEmpty()) {
+                showError(state.error)
+            } else {
+                inTheatersAdapter.setMovieList(state.movies)
+            }
         }
+
     }
 
     private fun handleTopRatedMoviesState(state: HomeState.TopRatedMoviesState) {
-        if (state.isLoading) {
-            topRatedMoviesAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
-        } else if (state.movies.isEmpty()) {
-
-        } else {
-            topRatedMoviesAdapter.setMovieList(state.movies)
+        binding.apply {
+            if (state.isLoading) {
+                topRatedMoviesAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
+            } else if (state.movies.isEmpty()) {
+                showError(state.error)
+            } else {
+                topRatedMoviesAdapter.setMovieList(state.movies)
+            }
         }
     }
 
     private fun handleBoxOfficeState(state: HomeState.BoxOfficeState) {
-        if (state.isLoading) {
-            topHighGrossingAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
-        } else if (state.movies.isEmpty()) {
+        binding.apply {
+            if (state.isLoading) {
+                highGrossingAdapter.setMovieList((1..5).map { MovieItem(isShimmer = true) })
+            } else if (state.movies.isEmpty()) {
+                showError(state.error)
+            } else {
+                highGrossingAdapter.setMovieList(state.movies)
+            }
+        }
+    }
 
-        } else {
-            topHighGrossingAdapter.setMovieList(state.movies)
+    private fun showError(error: String?) {
+        binding.apply {
+            errorLayout.root.visibility = View.VISIBLE
+            errorLayout.tvErrorMessage.text = error ?: "Something Went Wrong"
         }
     }
 
@@ -127,8 +133,19 @@ class HomeFragment : Fragment() {
             rvComingSoon.adapter = comingSoonAdapter
             rvInTheaters.adapter = inTheatersAdapter
             rvTopRatedMovies.adapter = topRatedMoviesAdapter
-            rvTopHighGrossing.adapter = topHighGrossingAdapter
+            rvHighGrossing.adapter = highGrossingAdapter
+
+            srLayout.setOnRefreshListener {
+                srLayout.isRefreshing = false
+                errorLayout.root.visibility = View.GONE
+                viewModel.refreshScreenData()
+            }
+            errorLayout.btnTryAgain.setOnClickListener {
+                errorLayout.root.visibility = View.GONE
+                viewModel.refreshScreenData()
+            }
         }
+
     }
 
 

@@ -22,7 +22,7 @@ class Repository @Inject constructor(
                 val cache = movieDAO.getMovieItems(MovieType.ComingSoon.value)
                 if (cache.isEmpty()) {
                     val response = apiService.getComingSoon()
-                    movieDAO.addMovieItems(mapResponse(response, MovieType.ComingSoon.value))
+                    cacheResponse(response,MovieType.ComingSoon.value)
                     emit(response)
                 } else {
                     emit(Response.success(MovieListResponse(items = cache)))
@@ -41,13 +41,13 @@ class Repository @Inject constructor(
                 val cache = movieDAO.getMovieItems(MovieType.InTheaters.value)
                 if (cache.isEmpty()) {
                     val response = apiService.getInTheaters()
-                    movieDAO.addMovieItems(mapResponse(response, MovieType.InTheaters.value))
+                    cacheResponse(response,MovieType.InTheaters.value)
                     emit(response)
                 } else {
                     emit(Response.success(MovieListResponse(items = cache)))
                 }
             } else {
-                val response = apiService.getComingSoon()
+                val response = apiService.getInTheaters()
                 movieDAO.addMovieItems(mapResponse(response, MovieType.InTheaters.value))
                 emit(response)
             }
@@ -60,7 +60,7 @@ class Repository @Inject constructor(
                 val cache = movieDAO.getMovieItems(MovieType.TopRated.value)
                 if (cache.isEmpty()) {
                     val response = apiService.getTopRatedMovies()
-                    movieDAO.addMovieItems(mapResponse(response, MovieType.TopRated.value))
+                    cacheResponse(response,MovieType.TopRated.value)
                     emit(response)
                 } else {
                     emit(Response.success(MovieListResponse(items = cache)))
@@ -79,7 +79,7 @@ class Repository @Inject constructor(
                 val cache = movieDAO.getMovieItems(MovieType.HighGrossing.value)
                 if (cache.isEmpty()) {
                     val response = apiService.getBoxOffice()
-                    movieDAO.addMovieItems(mapResponse(response, MovieType.HighGrossing.value))
+                    cacheResponse(response,MovieType.HighGrossing.value)
                     emit(response)
                 } else {
                     emit(Response.success(MovieListResponse(items = cache)))
@@ -92,6 +92,11 @@ class Repository @Inject constructor(
         }
     }
 
+    private suspend fun cacheResponse(response:Response<MovieListResponse>,movieType: String){
+        if(response.isSuccessful && response.body()?.items.isNullOrEmpty().not()){
+            movieDAO.addMovieItems(mapResponse(response, movieType))
+        }
+    }
 
     private fun mapResponse(
         response: Response<MovieListResponse>,
