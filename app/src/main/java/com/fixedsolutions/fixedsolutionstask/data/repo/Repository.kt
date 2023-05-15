@@ -35,7 +35,7 @@ class Repository @Inject constructor(
                 }
             } else {
                 val response = apiService.getComingSoon()
-                movieDAO.addMovieItems(mapResponse(response, MovieType.ComingSoon.value))
+                cacheResponse(response, MovieType.ComingSoon.value)
                 emit(response)
             }
         }.flowOn(dispatcher)
@@ -54,7 +54,7 @@ class Repository @Inject constructor(
                 }
             } else {
                 val response = apiService.getInTheaters()
-                movieDAO.addMovieItems(mapResponse(response, MovieType.InTheaters.value))
+                cacheResponse(response, MovieType.InTheaters.value)
                 emit(response)
             }
         }.flowOn(dispatcher)
@@ -73,7 +73,7 @@ class Repository @Inject constructor(
                 }
             } else {
                 val response = apiService.getTopRatedMovies()
-                movieDAO.addMovieItems(mapResponse(response, MovieType.TopRated.value))
+                cacheResponse(response, MovieType.TopRated.value)
                 emit(response)
             }
         }.flowOn(dispatcher)
@@ -92,7 +92,7 @@ class Repository @Inject constructor(
                 }
             } else {
                 val response = apiService.getBoxOffice()
-                movieDAO.addMovieItems(mapResponse(response, MovieType.HighGrossing.value))
+                cacheResponse(response, MovieType.HighGrossing.value)
                 emit(response)
             }
         }.flowOn(dispatcher)
@@ -108,6 +108,7 @@ class Repository @Inject constructor(
 
     private suspend fun cacheResponse(response: Response<MovieListResponse>, movieType: String) {
         if (response.isSuccessful && response.body()?.items.isNullOrEmpty().not()) {
+            movieDAO.deleteMovieItemByMovieType(movieType)
             movieDAO.addMovieItems(mapResponse(response, movieType))
         }
     }
