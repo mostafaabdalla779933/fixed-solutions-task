@@ -1,3 +1,8 @@
 package com.fixedsolutions.fixedsolutionstask.ui.setting
 
-class SettingState(val darkModeOption: Int)
+import com.fixedsolutions.fixedsolutionstask.data.model.ComplaintModel
+
+data class SettingState(
+    val darkModeOption: Int = -100,
+    val list: MutableList<ComplaintModel> = mutableListOf()
+)

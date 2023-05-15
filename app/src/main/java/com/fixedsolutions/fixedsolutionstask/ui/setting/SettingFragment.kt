@@ -18,6 +18,9 @@ class SettingFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingBinding
     private lateinit var viewModel: SettingVM
+    private val adapter:ComplaintsAdapter by lazy {
+        ComplaintsAdapter()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,32 +39,45 @@ class SettingFragment : Fragment() {
                 handleState(it)
             }
         }
-
     }
 
     private fun initView() {
-        binding.rgDarkMode.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.rbFollow -> {
-                    viewModel.setDarkModeOption(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-                }
-                R.id.rbDark -> {
-                    viewModel.setDarkModeOption(AppCompatDelegate.MODE_NIGHT_YES)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
+        binding.apply {
 
-                R.id.rbLight -> {
-                    viewModel.setDarkModeOption(AppCompatDelegate.MODE_NIGHT_NO)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            rvComplaints.adapter = adapter
+
+            btnSendComplaint.setOnClickListener {
+                ComplaintsBottomSheet().show(childFragmentManager, "tag")
+            }
+
+            rgDarkMode.setOnCheckedChangeListener { group, checkedId ->
+                when (checkedId) {
+                    R.id.rbFollow -> {
+                        viewModel.setDarkModeOption(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    }
+                    R.id.rbDark -> {
+                        viewModel.setDarkModeOption(AppCompatDelegate.MODE_NIGHT_YES)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+
+                    R.id.rbLight -> {
+                        viewModel.setDarkModeOption(AppCompatDelegate.MODE_NIGHT_NO)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    }
                 }
             }
         }
     }
 
     private fun handleState(state: SettingState) {
+        handleDarkModeState(state.darkModeOption)
+        adapter.submitList(state.list)
+    }
+
+    private fun handleDarkModeState(darkModeOption: Int) {
         binding.apply {
-            when (state.darkModeOption) {
+            when (darkModeOption) {
                 AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> {
                     rbFollow.isChecked = true
                 }
@@ -74,4 +90,5 @@ class SettingFragment : Fragment() {
             }
         }
     }
+
 }

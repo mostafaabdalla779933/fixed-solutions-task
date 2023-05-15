@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_background"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:textColor="#000000"
+        android:textColorHint="#615F5F"
+        android:background="@drawable/bg_edit_text"
+        android:hint="Complaint Title"
+        android:maxLines="1"
+        android:padding="15dp" />
+
+    <EditText
+        android:id="@+id/etDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:textColor="#000000"
+        android:textColorHint="#615F5F"
+        android:background="@drawable/bg_edit_text"
+        android:hint="Complaint description"
+        android:maxLines="5"
+        android:gravity="start"
+        android:minLines="5"
+        android:padding="15dp" />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:padding="13dp"
+        android:background="#FF0000"
+        android:textAllCaps="false"
+        android:text="Submit"
+        android:textColor="#FFFFFF"/>
+
+</LinearLayout>
