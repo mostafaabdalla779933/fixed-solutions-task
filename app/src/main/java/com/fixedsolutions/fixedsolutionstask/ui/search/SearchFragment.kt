@@ -1,10 +1,12 @@
 package com.fixedsolutions.fixedsolutionstask.ui.search
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -66,6 +68,7 @@ class SearchFragment : Fragment() {
                     if(query.isNullOrEmpty().not()){
                         viewModel.onClear()
                         viewModel.searchExpression(query?.trim() ?: "")
+                        hideKeyboard()
                     }
                     return true
                 }
@@ -76,5 +79,15 @@ class SearchFragment : Fragment() {
 
             rvSearchResult.adapter = resultAdapter
         }
+    }
+
+    fun hideKeyboard(){
+        try {
+            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (inputMethodManager.isAcceptingText) {
+                inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+            }
+        }catch (e:Exception){}
+
     }
 }

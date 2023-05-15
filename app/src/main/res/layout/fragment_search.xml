@@ -13,13 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@color/white"
-        android:backgroundTint="@color/white"
+        android:background="@color/search_color"
+        android:backgroundTint="@color/search_color"
         android:iconifiedByDefault="false"
         app:iconifiedByDefault="false"
-        app:queryBackground="@color/white"
+        app:queryBackground="@color/search_color"
         app:queryHint="@string/search"
-        app:submitBackground="@color/white" />
+        app:submitBackground="@color/search_color" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
