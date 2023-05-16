@@ -99,5 +99,10 @@ dependencies {
     //DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0-alpha01"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+
+    // MockK for mocking dependencies in tests
+    testImplementation "io.mockk:mockk:1.12.0"
+    testImplementation "io.mockk:mockk-android:1.12.0"
+    androidTestImplementation "io.mockk:mockk-android:1.12.0"
 }
 
