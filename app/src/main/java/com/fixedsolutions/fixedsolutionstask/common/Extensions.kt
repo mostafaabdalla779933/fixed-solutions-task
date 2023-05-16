@@ -10,6 +10,10 @@ import retrofit2.HttpException
 import java.net.UnknownHostException
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+import java.util.concurrent.CountDownLatch
 
 fun Fragment.showMessage(message:String){
     Toast.makeText(requireContext(),message, Toast.LENGTH_LONG).show()
@@ -46,4 +50,33 @@ fun Context.getLoadingDrawable(): CircularProgressDrawable {
     circularProgressDrawable.centerRadius = 30f
     circularProgressDrawable.start()
     return circularProgressDrawable
+}
+
+
+inline fun <reified T : Any> Flow<T>.testFlowObserver(testScope: CoroutineScope): FlowTestObserver<T> {
+    return FlowTestObserver<T>().also { observer ->
+        testScope.launch {
+            collect { value -> observer.onChanged(value) }
+        }
+    }
+}
+
+
+class FlowTestObserver<T> {
+    private val latch = CountDownLatch(1)
+    val values = mutableListOf<T>()
+
+    fun onChanged(newValue: T) {
+        values.add(newValue)
+        latch.countDown()
+    }
+
+    suspend fun awaitValue(): T {
+        if (values.isNotEmpty()) {
+            return values.last()
+        }
+
+        latch.await()
+        return values.last()
+    }
 }
